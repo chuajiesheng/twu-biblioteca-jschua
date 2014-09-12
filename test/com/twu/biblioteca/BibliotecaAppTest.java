@@ -25,7 +25,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void testShowMenu() throws Exception {
-        String expected = "Biblioteca Menu\n1. List all books";
+        String expected = "Biblioteca Menu\n1. List all books\n2. Quit";
         assertEquals(expected, new BibliotecaApp().showMenu());
     }
 
