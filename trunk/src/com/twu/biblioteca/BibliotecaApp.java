@@ -37,7 +37,7 @@ public class BibliotecaApp {
         if (item == 1) {
             return ALL_BOOKS;
         } else {
-            return "Invalid Menu Item.";
+            return "Select a valid option!";
         }
     }
 }
