@@ -65,4 +65,26 @@ public class BibliotecaAppTest {
         String msg = b.checkOut(0);
         assertEquals(expected, msg);
     }
+
+    @Test
+    public void testReturnBook() throws Exception {
+        String expectedMsg = "Thank you for returning the book.";
+        String expected = " 1. Steve Jobs                Walter Isaacson 2011\n" +
+                " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
+                " 3. Brave New World           Aldous Huxley 2006\n";
+        BibliotecaApp b = new BibliotecaApp();
+        b.checkOut(1);
+        String msg = b.returnBook(1);
+        assertEquals(expectedMsg, msg);
+        String res = b.listAllBooks();
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void testInvalidReturnBook() throws Exception {
+        String expected = "That is not a valid book to return.";
+        BibliotecaApp b = new BibliotecaApp();
+        String res = b.returnBook(1);
+        assertEquals(expected, res);
+    }
 }
