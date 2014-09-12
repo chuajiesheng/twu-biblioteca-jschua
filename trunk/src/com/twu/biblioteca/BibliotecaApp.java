@@ -1,9 +1,9 @@
 package com.twu.biblioteca;
 
 public class BibliotecaApp {
-    public static final String ALL_BOOKS = "1. Steve Jobs by Walter Isaacson\n" +
-            "2. Thinking, Fast and Slow by Daniel Kahneman\n" +
-            "3. Brave New World by Aldous Huxley";
+    public static final String ALL_BOOKS = "1. Steve Jobs\t\t\t\tWalter Isaacson\t2011\n" +
+            "2. Thinking, Fast and Slow\tDaniel Kahneman\t2011\n" +
+            "3. Brave New World\t\t\tAldous Huxley\t2006";
 
     public static void main(String[] args) {
         System.out.println(generateWelcomeMessage());
