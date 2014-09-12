@@ -17,23 +17,26 @@ public class BibliotecaAppTest {
 
     @Test
     public void testListAllBooks() throws Exception {
-        String expected = "1. Steve Jobs\t\t\t\tWalter Isaacson\t2011\n" +
-                "2. Thinking, Fast and Slow\tDaniel Kahneman\t2011\n" +
-                "3. Brave New World\t\t\tAldous Huxley\t2006";
+        String expected = " 1. Steve Jobs                Walter Isaacson 2011\n" +
+                " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
+                " 3. Brave New World           Aldous Huxley 2006\n";
         assertEquals(expected, new BibliotecaApp().listAllBooks());
     }
 
     @Test
     public void testShowMenu() throws Exception {
-        String expected = "Biblioteca Menu\n1. List all books\n2. Quit";
+        String expected = "Biblioteca Menu\n" +
+                "1. List all books\n" +
+                "2. Checkout Book\n" +
+                "3. Return Book\n4. Quit";
         assertEquals(expected, new BibliotecaApp().showMenu());
     }
 
     @Test
     public void testNavigateMenu() throws Exception {
-        String expected = "1. Steve Jobs\t\t\t\tWalter Isaacson\t2011\n" +
-                "2. Thinking, Fast and Slow\tDaniel Kahneman\t2011\n" +
-                "3. Brave New World\t\t\tAldous Huxley\t2006";
+        String expected = " 1. Steve Jobs                Walter Isaacson 2011\n" +
+                " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
+                " 3. Brave New World           Aldous Huxley 2006\n";
         assertEquals(expected, new BibliotecaApp().navigateMenu(1));
     }
 
@@ -41,5 +44,15 @@ public class BibliotecaAppTest {
     public void testInvalidNavigateMenu() throws Exception {
         String expected = "Select a valid option!";
         assertEquals(expected, new BibliotecaApp().navigateMenu(-1));
+    }
+
+    @Test
+    public void testCheckoutBook() throws Exception {
+        String expected = " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
+                " 3. Brave New World           Aldous Huxley 2006\n";
+        BibliotecaApp b = new BibliotecaApp();
+        b.checkOut(1);
+        String res = b.listAllBooks();
+        assertEquals(expected, res);
     }
 }
