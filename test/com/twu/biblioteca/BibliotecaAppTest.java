@@ -20,6 +20,26 @@ public class BibliotecaAppTest {
         String expected = "1. Steve Jobs\t\t\t\tWalter Isaacson\t2011\n" +
                 "2. Thinking, Fast and Slow\tDaniel Kahneman\t2011\n" +
                 "3. Brave New World\t\t\tAldous Huxley\t2006";
-        assertEquals(expected,  new BibliotecaApp().listAllBooks());
+        assertEquals(expected, new BibliotecaApp().listAllBooks());
+    }
+
+    @Test
+    public void testShowMenu() throws Exception {
+        String expected = "Biblioteca Menu\n1. List all books";
+        assertEquals(expected, new BibliotecaApp().showMenu());
+    }
+
+    @Test
+    public void testNavigateMenu() throws Exception {
+        String expected = "1. Steve Jobs\t\t\t\tWalter Isaacson\t2011\n" +
+                "2. Thinking, Fast and Slow\tDaniel Kahneman\t2011\n" +
+                "3. Brave New World\t\t\tAldous Huxley\t2006";
+        assertEquals(expected, new BibliotecaApp().navigateMenu(1));
+    }
+
+    @Test
+    public void testInvalidNavigateMenu() throws Exception {
+        String expected = "Invalid Menu Item.";
+        assertEquals(expected, new BibliotecaApp().navigateMenu(-1));
     }
 }

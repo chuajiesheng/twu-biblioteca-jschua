@@ -19,4 +19,17 @@ public class BibliotecaApp {
     public static String listAllBooks() {
         return ALL_BOOKS;
     }
+
+    public static String showMenu() {
+        return "Biblioteca Menu\n" +
+                "1. List all books";
+    }
+
+    public static String navigateMenu(int item) {
+        if (item == 1) {
+            return ALL_BOOKS;
+        } else {
+            return "Invalid Menu Item.";
+        }
+    }
 }
