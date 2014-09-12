@@ -30,14 +30,18 @@ public class BibliotecaApp {
 
     public static String showMenu() {
         return "Biblioteca Menu\n" +
-                "1. List all books";
+                "1. List all books\n" +
+                "2. Quit";
     }
 
     public static String navigateMenu(int item) {
         if (item == 1) {
             return ALL_BOOKS;
+        } else if (item == 2) {
+            System.exit(0);
         } else {
             return "Select a valid option!";
         }
+        return null;
     }
 }
