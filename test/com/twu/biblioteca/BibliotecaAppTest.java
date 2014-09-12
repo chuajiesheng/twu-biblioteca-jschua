@@ -39,7 +39,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void testInvalidNavigateMenu() throws Exception {
-        String expected = "Invalid Menu Item.";
+        String expected = "Select a valid option!";
         assertEquals(expected, new BibliotecaApp().navigateMenu(-1));
     }
 }
