@@ -5,7 +5,11 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class BibliotecaApp {
-    private ArrayList<Book> books;
+    private enum STATE {MENU, CHECKOUT, RETURN};
+    private STATE currentState = STATE.MENU;
+
+    private ArrayList<Book> booksAvailable;
+    private ArrayList<Book> booksOnLoan;
     private Book[] allBooks = {
             new Book(1, "Steve Jobs", "Walter Isaacson", "2011"),
             new Book(2, "Thinking, Fast and Slow", "Daniel Kahneman", "2011"),
@@ -17,8 +21,10 @@ public class BibliotecaApp {
     }
 
     public BibliotecaApp() {
-        books = new ArrayList<Book>();
-        Collections.addAll(books, allBooks);
+        booksAvailable = new ArrayList<Book>();
+        Collections.addAll(booksAvailable, allBooks);
+
+        booksOnLoan = new ArrayList<Book>();
     }
 
     private void run() {
@@ -30,7 +36,11 @@ public class BibliotecaApp {
 
         while (sc.hasNext()) {
             int option = Integer.parseInt(sc.next());
-            System.out.println(navigateMenu(option));
+            if (currentState == STATE.MENU) {
+                System.out.println(navigateMenu(option));
+            } else if (currentState == STATE.CHECKOUT) {
+                System.out.println(checkOut(option));
+            }
         }
     }
 
@@ -40,7 +50,7 @@ public class BibliotecaApp {
 
     public String listAllBooks() {
         StringBuilder sb = new StringBuilder();
-        for (Book b : books) {
+        for (Book b : booksAvailable) {
             sb.append(b.toString() + "\n");
         }
         return sb.toString();
@@ -57,6 +67,10 @@ public class BibliotecaApp {
     public String navigateMenu(int item) {
         if (item == 1) {
             return listAllBooks();
+        } else if (item == 2) {
+            currentState = STATE.CHECKOUT;
+            return listAllBooks() + "\n" +
+                    "Please select book to checkout.";
         } else if (item == 4) {
             System.exit(0);
         } else {
@@ -66,12 +80,25 @@ public class BibliotecaApp {
     }
 
     public String checkOut(int item) {
-        for (Book b : books) {
+        for (Book b : booksAvailable) {
             if (b.getId() == item) {
-                books.remove(b);
+                booksAvailable.remove(b);
+                booksOnLoan.add(b);
                 return "Thank you! Enjoy the book";
             }
         }
         return "That book is not available.";
+    }
+
+
+    public String returnBook(int item) {
+        for (Book b : booksOnLoan) {
+            if (b.getId() == item) {
+                booksOnLoan.remove(b);
+                booksAvailable.add(b.getId() - 1, b);
+                return "Thank you for returning the book.";
+            }
+        }
+        return "That is not a valid book to return.";
     }
 }
