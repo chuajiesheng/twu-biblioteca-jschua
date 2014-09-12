@@ -40,6 +40,8 @@ public class BibliotecaApp {
                 System.out.println(navigateMenu(option));
             } else if (currentState == STATE.CHECKOUT) {
                 System.out.println(checkOut(option));
+            } else if (currentState == STATE.RETURN) {
+                System.out.println(returnBook(option));
             }
         }
     }
@@ -51,6 +53,14 @@ public class BibliotecaApp {
     public String listAllBooks() {
         StringBuilder sb = new StringBuilder();
         for (Book b : booksAvailable) {
+            sb.append(b.toString() + "\n");
+        }
+        return sb.toString();
+    }
+
+    private String listBooksOnLoan() {
+        StringBuilder sb = new StringBuilder();
+        for (Book b : booksOnLoan) {
             sb.append(b.toString() + "\n");
         }
         return sb.toString();
@@ -71,6 +81,10 @@ public class BibliotecaApp {
             currentState = STATE.CHECKOUT;
             return listAllBooks() + "\n" +
                     "Please select book to checkout.";
+        } else if (item == 3) {
+            currentState = STATE.RETURN;
+            return listBooksOnLoan() + "\n" +
+                    "Please select book to return.";
         } else if (item == 4) {
             System.exit(0);
         } else {
@@ -87,6 +101,7 @@ public class BibliotecaApp {
                 return "Thank you! Enjoy the book";
             }
         }
+        currentState = STATE.MENU;
         return "That book is not available.";
     }
 
@@ -99,6 +114,7 @@ public class BibliotecaApp {
                 return "Thank you for returning the book.";
             }
         }
+        currentState = STATE.MENU;
         return "That is not a valid book to return.";
     }
 }
