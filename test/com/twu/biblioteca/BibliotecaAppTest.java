@@ -48,11 +48,21 @@ public class BibliotecaAppTest {
 
     @Test
     public void testCheckoutBook() throws Exception {
+        String expectedMsg = "Thank you! Enjoy the book";
         String expected = " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
                 " 3. Brave New World           Aldous Huxley 2006\n";
         BibliotecaApp b = new BibliotecaApp();
-        b.checkOut(1);
+        String msg = b.checkOut(1);
+        assertEquals(expectedMsg, msg);
         String res = b.listAllBooks();
         assertEquals(expected, res);
+    }
+
+    @Test
+    public void testInvalidCheckoutBook() throws Exception {
+        String expected = "That book is not available.";
+        BibliotecaApp b = new BibliotecaApp();
+        String msg = b.checkOut(0);
+        assertEquals(expected, msg);
     }
 }

@@ -65,12 +65,13 @@ public class BibliotecaApp {
         return null;
     }
 
-    public void checkOut(int item) {
+    public String checkOut(int item) {
         for (Book b : books) {
             if (b.getId() == item) {
                 books.remove(b);
-                break;
+                return "Thank you! Enjoy the book";
             }
         }
+        return "That book is not available.";
     }
 }
