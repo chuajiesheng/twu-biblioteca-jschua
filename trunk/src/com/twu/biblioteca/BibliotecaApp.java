@@ -1,5 +1,7 @@
 package com.twu.biblioteca;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -17,7 +19,7 @@ public class BibliotecaApp {
     };
 
     public static void main(String[] args) {
-        new BibliotecaApp().run();
+        new BibliotecaApp().run(System.in, System.out);
     }
 
     public BibliotecaApp() {
@@ -27,21 +29,24 @@ public class BibliotecaApp {
         booksOnLoan = new ArrayList<Book>();
     }
 
-    private void run() {
-        Scanner sc = new Scanner(System.in);
+    public void run(InputStream in, PrintStream out) {
+        Scanner sc = new Scanner(in);
 
-        System.out.println(generateWelcomeMessage());
-        System.out.println("\n");
-        System.out.println(showMenu());
+        out.println(generateWelcomeMessage());
+        out.println("\n");
+        out.println(showMenu());
 
         while (sc.hasNext()) {
             int option = Integer.parseInt(sc.next());
             if (currentState == STATE.MENU) {
-                System.out.println(navigateMenu(option));
+                if (option == 4) {
+                    break;
+                }
+                out.println(navigateMenu(option));
             } else if (currentState == STATE.CHECKOUT) {
-                System.out.println(checkOut(option));
+                out.println(checkOut(option));
             } else if (currentState == STATE.RETURN) {
-                System.out.println(returnBook(option));
+                out.println(returnBook(option));
             }
         }
     }
