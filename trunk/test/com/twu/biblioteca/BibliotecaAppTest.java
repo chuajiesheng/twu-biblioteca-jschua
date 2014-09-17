@@ -21,6 +21,15 @@ public class BibliotecaAppTest {
     public static final String STRING_STARTUP_MSG =
             BibliotecaApp.STRING_WELCOME_MSG + "\n\n\n" +
                     BibliotecaApp.STRING_MENU + "\n";
+    public static final String STRING_ALL_BOOKS = " 1. Steve Jobs                Walter Isaacson 2011\n" +
+            " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
+            " 3. Brave New World           Aldous Huxley 2006\n";
+    public static final String STRING_CHECKOUT_BOOK = " 1. Steve Jobs                Walter Isaacson 2011\n" +
+            " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
+            " 3. Brave New World           Aldous Huxley 2006\n" +
+            "\n" +
+            "Please select book to checkout.\n" +
+            "Thank you! Enjoy the book\n";
 
     private ByteArrayOutputStream outputBuffer;
     private PrintStream out;
@@ -66,9 +75,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void testNavigateMenu() throws Exception {
-        String expected = " 1. Steve Jobs                Walter Isaacson 2011\n" +
-                " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
-                " 3. Brave New World           Aldous Huxley 2006\n";
+        String expected = STRING_ALL_BOOKS;
         assertEquals(expected, new BibliotecaApp().navigateMenu(1));
     }
 
@@ -80,13 +87,11 @@ public class BibliotecaAppTest {
 
     @Test
     public void testCheckoutBook() throws Exception {
-        String expectedMsg = "Thank you! Enjoy the book";
-        String expected = " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
-                " 3. Brave New World           Aldous Huxley 2006\n";
-        BibliotecaApp b = new BibliotecaApp();
-        String msg = b.checkOut(1);
-        assertEquals(expectedMsg, msg);
-        String res = b.listAllBooks();
+        String expected = STRING_CHECKOUT_BOOK;
+        InputStream in = new ByteArrayInputStream("2\n1\n".getBytes());
+        final BibliotecaApp app = new BibliotecaApp();
+        app.run(in, out);
+        String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
         assertEquals(expected, res);
     }
 
@@ -100,16 +105,19 @@ public class BibliotecaAppTest {
 
     @Test
     public void testReturnBook() throws Exception {
-        String expectedMsg = "Thank you for returning the book.";
         String expected = " 1. Steve Jobs                Walter Isaacson 2011\n" +
-                " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
-                " 3. Brave New World           Aldous Huxley 2006\n";
-        BibliotecaApp b = new BibliotecaApp();
-        b.checkOut(1);
-        String msg = b.returnBook(1);
-        assertEquals(expectedMsg, msg);
-        String res = b.listAllBooks();
+                "\n" +
+                "Please select book to return.\n" +
+                "Thank you for returning the book.\n";
+        InputStream in = new ByteArrayInputStream("2\n1\n3\n1\n".getBytes());
+        final BibliotecaApp app = new BibliotecaApp();
+        app.run(in, out);
+
+        String res = outputBuffer.toString();
+        res = res.replace(STRING_STARTUP_MSG, "");
+        res = res.replace(STRING_CHECKOUT_BOOK, "");
         assertEquals(expected, res);
+        res = res.trim();
     }
 
     @Test
