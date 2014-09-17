@@ -17,6 +17,10 @@ import static junit.framework.TestCase.assertEquals;
  * Created by chuajiesheng on 12/9/14.
  */
 public class BibliotecaAppTest {
+    public static final String STRING_STARTUP_MSG =
+            BibliotecaApp.STRING_WELCOME_MSG + "\n\n\n" +
+                    BibliotecaApp.STRING_MENU + "\n";
+
     private ByteArrayOutputStream outputBuffer;
     private PrintStream out;
 
@@ -28,18 +32,13 @@ public class BibliotecaAppTest {
 
     @Test
     public void testGenerateWelcomeMessage() throws Exception {
-        String expected = "Welcome to Biblioteca!";
+        String expected = BibliotecaApp.STRING_WELCOME_MSG;
         assertEquals(expected, new BibliotecaApp().generateWelcomeMessage());
     }
 
     @Test
     public void testStartupMessage() throws Exception {
-        String expected = "Welcome to Biblioteca!\n\n\n" +
-                "Biblioteca Menu\n" +
-                "1. List all books\n" +
-                "2. Checkout Book\n" +
-                "3. Return Book\n" +
-                "4. Quit\n";
+        String expected = STRING_STARTUP_MSG;
         InputStream in = new ByteArrayInputStream("4\n".getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
@@ -56,10 +55,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void testShowMenu() throws Exception {
-        String expected = "Biblioteca Menu\n" +
-                "1. List all books\n" +
-                "2. Checkout Book\n" +
-                "3. Return Book\n4. Quit";
+        String expected = BibliotecaApp.STRING_MENU;
         assertEquals(expected, new BibliotecaApp().showMenu());
     }
 

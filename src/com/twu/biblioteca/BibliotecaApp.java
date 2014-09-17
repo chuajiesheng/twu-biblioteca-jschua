@@ -7,6 +7,14 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class BibliotecaApp {
+
+    public static final String STRING_WELCOME_MSG = "Welcome to Biblioteca!";
+    public static final String STRING_MENU = "Biblioteca Menu\n" +
+            "1. List all books\n" +
+            "2. Checkout Book\n" +
+            "3. Return Book\n" +
+            "4. Quit";
+
     private enum STATE {MENU, CHECKOUT, RETURN};
     private STATE currentState = STATE.MENU;
 
@@ -52,7 +60,7 @@ public class BibliotecaApp {
     }
 
     public String generateWelcomeMessage() {
-        return "Welcome to Biblioteca!";
+        return STRING_WELCOME_MSG;
     }
 
     public String listAllBooks() {
@@ -72,11 +80,7 @@ public class BibliotecaApp {
     }
 
     public String showMenu() {
-        return "Biblioteca Menu\n" +
-                "1. List all books\n" +
-                "2. Checkout Book\n" +
-                "3. Return Book\n" +
-                "4. Quit";
+        return STRING_MENU;
     }
 
     public String navigateMenu(int item) {
