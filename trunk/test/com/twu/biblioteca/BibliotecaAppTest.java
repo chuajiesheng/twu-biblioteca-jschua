@@ -12,6 +12,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by chuajiesheng on 12/9/14.
@@ -49,8 +50,12 @@ public class BibliotecaAppTest {
     public void testListAllBooks() throws Exception {
         String expected = " 1. Steve Jobs                Walter Isaacson 2011\n" +
                 " 2. Thinking, Fast and Slow   Daniel Kahneman 2011\n" +
-                " 3. Brave New World           Aldous Huxley 2006\n";
-        assertEquals(expected, new BibliotecaApp().listAllBooks());
+                " 3. Brave New World           Aldous Huxley 2006\n\n";
+        InputStream in = new ByteArrayInputStream("1\n".getBytes());
+        final BibliotecaApp app = new BibliotecaApp();
+        app.run(in, out);
+        String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
+        assertEquals(expected, res);
     }
 
     @Test
