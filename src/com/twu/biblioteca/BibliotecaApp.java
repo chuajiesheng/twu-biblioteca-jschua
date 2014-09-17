@@ -13,7 +13,9 @@ public class BibliotecaApp {
             "1. List all books\n" +
             "2. Checkout Book\n" +
             "3. Return Book\n" +
-            "4. Quit";
+            "4. Checkout Movie\n" +
+            "5. Return Movie\n" +
+            "6. Quit";
 
     private enum STATE {MENU, BOOK_CHECKOUT, BOOK_RETURN, MOVIE_CHECKOUT, MOVIE_RETURN};
     private STATE currentState = STATE.MENU;
