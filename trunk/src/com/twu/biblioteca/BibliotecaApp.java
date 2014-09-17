@@ -15,7 +15,7 @@ public class BibliotecaApp {
             "3. Return Book\n" +
             "4. Quit";
 
-    private enum STATE {MENU, CHECKOUT, RETURN};
+    private enum STATE {MENU, BOOK_CHECKOUT, BOOK_RETURN, MOVIE_CHECKOUT, MOVIE_RETURN};
     private STATE currentState = STATE.MENU;
 
     private ArrayList<Book> booksAvailable;
@@ -25,6 +25,14 @@ public class BibliotecaApp {
             new Book(2, "Thinking, Fast and Slow", "Daniel Kahneman", "2011"),
             new Book(3, "Brave New World", "Aldous Huxley", "2006")
     };
+    private ArrayList<Movie> moviesAvailable;
+    private ArrayList<Movie> movieOnLoan;
+    private Movie[] allMovies = {
+            new Movie(1, "Transformers", 2007, "Michael Bay", 7),
+            new Movie(2, "Fast & Furious 6", 2013, "Justin Lin", 7),
+            new Movie(3, "Transcendence", 2014, "Wally Pfister", 6),
+            new Movie(4, "2012", 2009, "Roland Emmerich", 5)
+    };
 
     public static void main(String[] args) {
         new BibliotecaApp().run(System.in, System.out);
@@ -33,8 +41,11 @@ public class BibliotecaApp {
     public BibliotecaApp() {
         booksAvailable = new ArrayList<Book>();
         Collections.addAll(booksAvailable, allBooks);
-
         booksOnLoan = new ArrayList<Book>();
+
+        moviesAvailable = new ArrayList<Movie>();
+        Collections.addAll(moviesAvailable, allMovies);
+        movieOnLoan = new ArrayList<Movie>();
     }
 
     public void run(InputStream in, PrintStream out) {
@@ -47,16 +58,30 @@ public class BibliotecaApp {
         while (sc.hasNext()) {
             int option = Integer.parseInt(sc.next());
             if (currentState == STATE.MENU) {
-                if (option == 4) {
+                if (option == 6) {
                     break;
                 }
                 out.println(navigateMenu(option));
-            } else if (currentState == STATE.CHECKOUT) {
+            } else if (currentState == STATE.BOOK_CHECKOUT) {
                 out.println(checkOut(option));
-            } else if (currentState == STATE.RETURN) {
+            } else if (currentState == STATE.BOOK_RETURN) {
                 out.println(returnBook(option));
+            } else if (currentState == STATE.MOVIE_CHECKOUT) {
+                out.println(movieCheckOut(option));
             }
         }
+    }
+
+    private String movieCheckOut(int item) {
+        currentState = STATE.MENU;
+        for (Movie m : moviesAvailable) {
+            if (m.getId() == item) {
+                moviesAvailable.remove(m);
+                movieOnLoan.add(m);
+                return "Thank you! Enjoy the movie";
+            }
+        }
+        return "That book is not available.";
     }
 
     public String generateWelcomeMessage() {
@@ -87,19 +112,39 @@ public class BibliotecaApp {
         if (item == 1) {
             return listAllBooks();
         } else if (item == 2) {
-            currentState = STATE.CHECKOUT;
+            currentState = STATE.BOOK_CHECKOUT;
             return listAllBooks() + "\n" +
                     "Please select book to checkout.";
         } else if (item == 3) {
-            currentState = STATE.RETURN;
+            currentState = STATE.BOOK_RETURN;
             return listBooksOnLoan() + "\n" +
                     "Please select book to return.";
         } else if (item == 4) {
+            currentState = STATE.MOVIE_CHECKOUT;
+            return listAllMovie() + "\n" +
+                    "Please select movie to checkout.";
+        } else if (item == 5) {
+            currentState = STATE.MOVIE_RETURN;
+            return listMovieOnLoan() + "\n" +
+                    "Please select book to return.";
+        } else if (item == 6) {
             System.exit(0);
         } else {
             return "Select a valid option!";
         }
         return null;
+    }
+
+    private String listMovieOnLoan() {
+        return null;
+    }
+
+    private String listAllMovie() {
+        StringBuilder sb = new StringBuilder();
+        for (Movie m : moviesAvailable) {
+            sb.append(m.toString() + "\n");
+        }
+        return sb.toString();
     }
 
     public String checkOut(int item) {

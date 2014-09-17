@@ -30,6 +30,13 @@ public class BibliotecaAppTest {
             "\n" +
             "Please select book to checkout.\n" +
             "Thank you! Enjoy the book\n";
+    public static final String STRING_CHECKOUT_MOVIE = " 1. Transformers              (2007) Michael Bay  7 \n" +
+            " 2. Fast & Furious 6          (2013) Justin Lin   7 \n" +
+            " 3. Transcendence             (2014) Wally Pfister 6 \n" +
+            " 4. 2012                      (2009) Roland Emmerich 5 \n" +
+            "\n" +
+            "Please select movie to checkout.\n" +
+            "Thank you! Enjoy the movie\n";
 
     private ByteArrayOutputStream outputBuffer;
     private PrintStream out;
@@ -49,7 +56,7 @@ public class BibliotecaAppTest {
     @Test
     public void testStartupMessage() throws Exception {
         String expected = STRING_STARTUP_MSG;
-        InputStream in = new ByteArrayInputStream("4\n".getBytes());
+        InputStream in = new ByteArrayInputStream("6\n".getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
         assertEquals(expected, outputBuffer.toString());
@@ -125,6 +132,16 @@ public class BibliotecaAppTest {
         String expected = "That is not a valid book to return.";
         BibliotecaApp b = new BibliotecaApp();
         String res = b.returnBook(1);
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void testCheckoutMovie() throws Exception {
+        String expected = STRING_CHECKOUT_MOVIE;
+        InputStream in = new ByteArrayInputStream("4\n1\n".getBytes());
+        final BibliotecaApp app = new BibliotecaApp();
+        app.run(in, out);
+        String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
         assertEquals(expected, res);
     }
 
