@@ -103,6 +103,7 @@ public class BibliotecaApp {
     }
 
     public String checkOut(int item) {
+        currentState = STATE.MENU;
         for (Book b : booksAvailable) {
             if (b.getId() == item) {
                 booksAvailable.remove(b);
@@ -110,12 +111,12 @@ public class BibliotecaApp {
                 return "Thank you! Enjoy the book";
             }
         }
-        currentState = STATE.MENU;
         return "That book is not available.";
     }
 
 
     public String returnBook(int item) {
+        currentState = STATE.MENU;
         for (Book b : booksOnLoan) {
             if (b.getId() == item) {
                 booksOnLoan.remove(b);
@@ -123,7 +124,6 @@ public class BibliotecaApp {
                 return "Thank you for returning the book.";
             }
         }
-        currentState = STATE.MENU;
         return "That is not a valid book to return.";
     }
 }
