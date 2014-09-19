@@ -1,6 +1,5 @@
 package com.twu.biblioteca;
 
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,10 +8,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by chuajiesheng on 12/9/14.
@@ -37,8 +34,11 @@ public class BibliotecaAppTest {
     public static final String STRING_CHECKOUT_MOVIE = STRING_ALL_MOVIES +
             "Please select movie to checkout.\n" +
             "Thank you! Enjoy the movie\n";
-    public static final String STRING_LOGIN_SUCCESS = "Login Successful!\n";
-    public static final String STRING_LOGIN_FAILED = "Login Failed.\n";
+    public static final String STRING_LOGIN_PROMPT = "Please enter your username: Please enter your password: ";
+    public static final String STRING_LOGIN_SUCCESS = STRING_LOGIN_PROMPT + "Login Successful!\n\n" +
+            BibliotecaApp.STRING_MENU_LOGGED_IN + "\n";
+    public static final String STRING_LOGIN_FAILED = STRING_LOGIN_PROMPT + "Login Failed.\n\n" +
+            BibliotecaApp.STRING_MENU + "\n";
 
     private ByteArrayOutputStream outputBuffer;
     private PrintStream out;
@@ -48,7 +48,7 @@ public class BibliotecaAppTest {
     public void setUp() throws Exception {
         outputBuffer = new ByteArrayOutputStream();
         out = new PrintStream(outputBuffer);
-        user = new User(1, "123-4567", "david123");
+        user = new User(1, "123-4567", "david123", "David", "david@hotmail.com", "(65) 6123 4567");
     }
 
     @Test
@@ -87,13 +87,13 @@ public class BibliotecaAppTest {
     @Test
     public void testNavigateMenu() throws Exception {
         String expected = STRING_ALL_BOOKS;
-        assertEquals(expected, new BibliotecaApp().navigateMenu(null, 1));
+        assertEquals(expected, new BibliotecaApp().navigateMenu(null, null, 1));
     }
 
     @Test
     public void testInvalidNavigateMenu() throws Exception {
         String expected = "Select a valid option!";
-        assertEquals(expected, new BibliotecaApp().navigateMenu(null, -1));
+        assertEquals(expected, new BibliotecaApp().navigateMenu(null, null, -1));
     }
 
     @Test
@@ -141,7 +141,7 @@ public class BibliotecaAppTest {
         InputStream in = new ByteArrayInputStream("3\n123-4567\ndavid123\n3\n1\n".getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.checkOut(user, 1);
-        app.checkOut(new User(-1, "Walter", "mitty"), 2);
+        app.checkOut(new User(-1, "Walter", "mitty", "", "", ""), 2);
         app.run(in, out);
 
         String res = outputBuffer.toString();
@@ -198,6 +198,21 @@ public class BibliotecaAppTest {
         app.run(in, out);
         String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
         assertEquals(expected, res);
+    }
+
+    @Test
+    public void testReadUserInformation() throws Exception {
+        String expected = "Name: David\n" +
+                "Email: david@hotmail.com\n" +
+                "Phone: (65) 6123 4567\n";
+        InputStream in = new ByteArrayInputStream("0\n123-4567\ndavid123\n0".getBytes());
+        final BibliotecaApp app = new BibliotecaApp();
+        app.run(in, out);
+        String res = outputBuffer.toString();
+        res = res.replace(STRING_STARTUP_MSG, "");
+        res = res.replace(STRING_LOGIN_SUCCESS, "");
+        assertEquals(expected, res);
+
     }
 
     @After
