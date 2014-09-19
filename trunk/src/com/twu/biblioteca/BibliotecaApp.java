@@ -10,11 +10,11 @@ public class BibliotecaApp {
 
     public static final String STRING_WELCOME_MSG = "Welcome to Biblioteca!";
     public static final String STRING_MENU = "Biblioteca Menu\n" +
-            "1. List all books\n" +
+            "1. List all Books\n" +
             "2. Checkout Book\n" +
             "3. Return Book\n" +
-            "4. Checkout Movie\n" +
-            "5. Return Movie\n" +
+            "4. List all Movies\n" +
+            "5. Checkout Movie\n" +
             "6. Quit";
 
     private enum STATE {MENU, BOOK_CHECKOUT, BOOK_RETURN, MOVIE_CHECKOUT, MOVIE_RETURN};
@@ -122,13 +122,11 @@ public class BibliotecaApp {
             return listBooksOnLoan() + "\n" +
                     "Please select book to return.";
         } else if (item == 4) {
-            currentState = STATE.MOVIE_CHECKOUT;
-            return listAllMovie() + "\n" +
-                    "Please select movie to checkout.";
+            return listAllMovies();
         } else if (item == 5) {
-            currentState = STATE.MOVIE_RETURN;
-            return listMovieOnLoan() + "\n" +
-                    "Please select book to return.";
+            currentState = STATE.MOVIE_CHECKOUT;
+            return listAllMovies() + "\n" +
+                    "Please select movie to checkout.";
         } else if (item == 6) {
             System.exit(0);
         } else {
@@ -137,11 +135,7 @@ public class BibliotecaApp {
         return null;
     }
 
-    private String listMovieOnLoan() {
-        return null;
-    }
-
-    private String listAllMovie() {
+    private String listAllMovies() {
         StringBuilder sb = new StringBuilder();
         for (Movie m : moviesAvailable) {
             sb.append(m.toString() + "\n");

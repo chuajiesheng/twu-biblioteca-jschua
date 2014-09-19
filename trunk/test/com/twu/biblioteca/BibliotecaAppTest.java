@@ -30,11 +30,11 @@ public class BibliotecaAppTest {
             "\n" +
             "Please select book to checkout.\n" +
             "Thank you! Enjoy the book\n";
-    public static final String STRING_CHECKOUT_MOVIE = " 1. Transformers              (2007) Michael Bay  7 \n" +
-            " 2. Fast & Furious 6          (2013) Justin Lin   7 \n" +
-            " 3. Transcendence             (2014) Wally Pfister 6 \n" +
-            " 4. 2012                      (2009) Roland Emmerich 5 \n" +
-            "\n" +
+    public static final String STRING_ALL_MOVIES = " 1. Transformers              (2007) Michael Bay  7 of10\n" +
+            " 2. Fast & Furious 6          (2013) Justin Lin   7 of10\n" +
+            " 3. Transcendence             (2014) Wally Pfister 6 of10\n" +
+            " 4. 2012                      (2009) Roland Emmerich 5 of10\n\n";
+    public static final String STRING_CHECKOUT_MOVIE = STRING_ALL_MOVIES +
             "Please select movie to checkout.\n" +
             "Thank you! Enjoy the movie\n";
 
@@ -136,9 +136,19 @@ public class BibliotecaAppTest {
     }
 
     @Test
+    public void testListAllMovies() throws Exception {
+        String expected = STRING_ALL_MOVIES;
+        InputStream in = new ByteArrayInputStream("4\n".getBytes());
+        final BibliotecaApp app = new BibliotecaApp();
+        app.run(in, out);
+        String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
+        assertEquals(expected, res);
+    }
+
+    @Test
     public void testCheckoutMovie() throws Exception {
         String expected = STRING_CHECKOUT_MOVIE;
-        InputStream in = new ByteArrayInputStream("4\n1\n".getBytes());
+        InputStream in = new ByteArrayInputStream("5\n1\n".getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
         String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
