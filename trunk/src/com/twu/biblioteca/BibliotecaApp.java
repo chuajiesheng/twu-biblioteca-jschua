@@ -78,7 +78,7 @@ public class BibliotecaApp {
                 }
                 out.println(navigateMenu(sc, option));
             } else if (currentState == STATE.BOOK_CHECKOUT) {
-                out.println(checkOut(option));
+                out.println(checkOut(currentUser, option));
             } else if (currentState == STATE.BOOK_RETURN) {
                 out.println(returnBook(option));
             } else if (currentState == STATE.MOVIE_CHECKOUT) {
@@ -111,10 +111,12 @@ public class BibliotecaApp {
         return sb.toString();
     }
 
-    private String listBooksOnLoan() {
+    private String listBooksOnLoan(User currentUser) {
         StringBuilder sb = new StringBuilder();
         for (Book b : booksOnLoan) {
-            sb.append(b.toString() + "\n");
+            if (b.getOnLoanTo().equals(currentUser)) {
+                sb.append(b.toString() + "\n");
+            }
         }
         return sb.toString();
     }
@@ -129,12 +131,18 @@ public class BibliotecaApp {
         } else if (item == 1) {
             return listAllBooks();
         } else if (item == 2) {
+            if (currentUser == null) {
+                return checkLogin(sc);
+            }
             currentState = STATE.BOOK_CHECKOUT;
             return listAllBooks() + "\n" +
                     "Please select book to checkout.";
         } else if (item == 3) {
+            if (currentUser == null) {
+                return checkLogin(sc);
+            }
             currentState = STATE.BOOK_RETURN;
-            return listBooksOnLoan() + "\n" +
+            return listBooksOnLoan(currentUser) + "\n" +
                     "Please select book to return.";
         } else if (item == 4) {
             return listAllMovies();
@@ -169,11 +177,12 @@ public class BibliotecaApp {
         return sb.toString();
     }
 
-    public String checkOut(int item) {
+    public String checkOut(User u, int item) {
         currentState = STATE.MENU;
         for (Book b : booksAvailable) {
             if (b.getId() == item) {
                 booksAvailable.remove(b);
+                b.setOnLoanTo(u);
                 booksOnLoan.add(b);
                 return "Thank you! Enjoy the book";
             }
@@ -187,6 +196,7 @@ public class BibliotecaApp {
         for (Book b : booksOnLoan) {
             if (b.getId() == item) {
                 booksOnLoan.remove(b);
+                b.setOnLoanTo(null);
                 booksAvailable.add(b.getId() - 1, b);
                 return "Thank you for returning the book.";
             }

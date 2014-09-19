@@ -37,14 +37,18 @@ public class BibliotecaAppTest {
     public static final String STRING_CHECKOUT_MOVIE = STRING_ALL_MOVIES +
             "Please select movie to checkout.\n" +
             "Thank you! Enjoy the movie\n";
+    public static final String STRING_LOGIN_SUCCESS = "Login Successful!\n";
+    public static final String STRING_LOGIN_FAILED = "Login Failed.\n";
 
     private ByteArrayOutputStream outputBuffer;
     private PrintStream out;
+    private User user = null;
 
     @Before
     public void setUp() throws Exception {
         outputBuffer = new ByteArrayOutputStream();
         out = new PrintStream(outputBuffer);
+        user = new User(1, "David", "david123");
     }
 
     @Test
@@ -94,8 +98,8 @@ public class BibliotecaAppTest {
 
     @Test
     public void testCheckoutBook() throws Exception {
-        String expected = STRING_CHECKOUT_BOOK;
-        InputStream in = new ByteArrayInputStream("2\n1\n".getBytes());
+        String expected = STRING_LOGIN_SUCCESS + STRING_CHECKOUT_BOOK;
+        InputStream in = new ByteArrayInputStream("2\nDavid\ndavid123\n2\n1\n".getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
         String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
@@ -106,7 +110,7 @@ public class BibliotecaAppTest {
     public void testInvalidCheckoutBook() throws Exception {
         String expected = "That book is not available.";
         BibliotecaApp b = new BibliotecaApp();
-        String msg = b.checkOut(0);
+        String msg = b.checkOut(user, 0);
         assertEquals(expected, msg);
     }
 
@@ -116,11 +120,32 @@ public class BibliotecaAppTest {
                 "\n" +
                 "Please select book to return.\n" +
                 "Thank you for returning the book.\n";
-        InputStream in = new ByteArrayInputStream("2\n1\n3\n1\n".getBytes());
+        InputStream in = new ByteArrayInputStream("2\nDavid\ndavid123\n2\n1\n3\n1\n".getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
 
         String res = outputBuffer.toString();
+        res = res.replace(STRING_LOGIN_SUCCESS, "");
+        res = res.replace(STRING_STARTUP_MSG, "");
+        res = res.replace(STRING_CHECKOUT_BOOK, "");
+        assertEquals(expected, res);
+        res = res.trim();
+    }
+
+    @Test
+    public void testReturnBookWithoutLoggedIn() throws Exception {
+        String expected = " 1. Steve Jobs                Walter Isaacson 2011\n" +
+                "\n" +
+                "Please select book to return.\n" +
+                "Thank you for returning the book.\n";
+        InputStream in = new ByteArrayInputStream("3\nDavid\ndavid123\n3\n1\n".getBytes());
+        final BibliotecaApp app = new BibliotecaApp();
+        app.checkOut(user, 1);
+        app.checkOut(new User(-1, "Walter", "mitty"), 2);
+        app.run(in, out);
+
+        String res = outputBuffer.toString();
+        res = res.replace(STRING_LOGIN_SUCCESS, "");
         res = res.replace(STRING_STARTUP_MSG, "");
         res = res.replace(STRING_CHECKOUT_BOOK, "");
         assertEquals(expected, res);
@@ -157,7 +182,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void testLogin() throws Exception {
-        String expected = "Login Successful!\n";
+        String expected = STRING_LOGIN_SUCCESS;
         InputStream in = new ByteArrayInputStream("0\nDavid\ndavid123\n".getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
@@ -167,7 +192,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void testFailedLogin() throws Exception {
-        String expected = "Login Failed.\n";
+        String expected = STRING_LOGIN_FAILED;
         InputStream in = new ByteArrayInputStream("0\nDavid\ndavid123456\n".getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);

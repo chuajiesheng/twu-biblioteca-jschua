@@ -44,4 +44,14 @@ public class User {
         }
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass() != getClass()) {
+            return false;
+        }
+
+        User u = (User) o;
+        return u.getId() == getId();
+    }
 }
