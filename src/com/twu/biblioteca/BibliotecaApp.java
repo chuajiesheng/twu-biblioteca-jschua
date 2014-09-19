@@ -39,7 +39,7 @@ public class BibliotecaApp {
     };
 
     private User[] allUsers =  {
-            new User(1, "David", "david123")
+            new User(1, "123-4567", "david123")
     };
     private HashMap<String, User> users;
     private User currentUser = null;
