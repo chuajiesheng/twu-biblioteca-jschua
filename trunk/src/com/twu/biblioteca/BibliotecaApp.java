@@ -18,6 +18,14 @@ public class BibliotecaApp {
             "4. List all Movies\n" +
             "5. Checkout Movie\n" +
             "6. Quit";
+    public static final String STRING_MENU_LOGGED_IN = "Biblioteca Menu\n" +
+            "0. User Information\n" +
+            "1. List all Books\n" +
+            "2. Checkout Book\n" +
+            "3. Return Book\n" +
+            "4. List all Movies\n" +
+            "5. Checkout Movie\n" +
+            "6. Quit";
 
     private enum STATE {MENU, BOOK_CHECKOUT, BOOK_RETURN, MOVIE_CHECKOUT, MOVIE_RETURN};
     private STATE currentState = STATE.MENU;
@@ -39,7 +47,7 @@ public class BibliotecaApp {
     };
 
     private User[] allUsers =  {
-            new User(1, "123-4567", "david123")
+            new User(1, "123-4567", "david123", "David", "david@hotmail.com", "(65) 6123 4567")
     };
     private HashMap<String, User> users;
     private User currentUser = null;
@@ -76,7 +84,7 @@ public class BibliotecaApp {
                 if (option == 6) {
                     break;
                 }
-                out.println(navigateMenu(sc, option));
+                out.println(navigateMenu(sc, out, option));
             } else if (currentState == STATE.BOOK_CHECKOUT) {
                 out.println(checkOut(currentUser, option));
             } else if (currentState == STATE.BOOK_RETURN) {
@@ -87,59 +95,32 @@ public class BibliotecaApp {
         }
     }
 
-    private String movieCheckOut(int item) {
-        currentState = STATE.MENU;
-        for (Movie m : moviesAvailable) {
-            if (m.getId() == item) {
-                moviesAvailable.remove(m);
-                movieOnLoan.add(m);
-                return "Thank you! Enjoy the movie";
-            }
-        }
-        return "That book is not available.";
-    }
-
     public String generateWelcomeMessage() {
         return STRING_WELCOME_MSG;
-    }
-
-    public String listAllBooks() {
-        StringBuilder sb = new StringBuilder();
-        for (Book b : booksAvailable) {
-            sb.append(b.toString() + "\n");
-        }
-        return sb.toString();
-    }
-
-    private String listBooksOnLoan(User currentUser) {
-        StringBuilder sb = new StringBuilder();
-        for (Book b : booksOnLoan) {
-            if (b.getOnLoanTo().equals(currentUser)) {
-                sb.append(b.toString() + "\n");
-            }
-        }
-        return sb.toString();
     }
 
     public String showMenu() {
         return STRING_MENU;
     }
 
-    public String navigateMenu(Scanner sc, int item) {
+    public String navigateMenu(Scanner sc, PrintStream out, int item) {
         if (item == 0) {
-            return checkLogin(sc);
+            if (currentUser == null) {
+                return checkLogin(sc, out);
+            }
+            return userInformation(currentUser);
         } else if (item == 1) {
             return listAllBooks();
         } else if (item == 2) {
             if (currentUser == null) {
-                return checkLogin(sc);
+                return checkLogin(sc, out);
             }
             currentState = STATE.BOOK_CHECKOUT;
             return listAllBooks() + "\n" +
                     "Please select book to checkout.";
         } else if (item == 3) {
             if (currentUser == null) {
-                return checkLogin(sc);
+                return checkLogin(sc, out);
             }
             currentState = STATE.BOOK_RETURN;
             return listBooksOnLoan(currentUser) + "\n" +
@@ -158,21 +139,27 @@ public class BibliotecaApp {
         return null;
     }
 
-    private String checkLogin(Scanner sc) {
+    private String checkLogin(Scanner sc, PrintStream out) {
+        out.print("Please enter your username: ");
         String username = sc.next();
+        out.print("Please enter your password: ");
         String password = sc.next();
         currentUser = users.get(username).checkPassword(password);
         if (currentUser != null) {
-            return "Login Successful!";
+            return "Login Successful!\n\n" + STRING_MENU_LOGGED_IN;
         } else {
-            return "Login Failed.";
+            return "Login Failed.\n\n" + STRING_MENU;
         }
     }
 
-    private String listAllMovies() {
+    private String userInformation(User currentUser) {
+        return currentUser.getUserInformation();
+    }
+
+    public String listAllBooks() {
         StringBuilder sb = new StringBuilder();
-        for (Movie m : moviesAvailable) {
-            sb.append(m.toString() + "\n");
+        for (Book b : booksAvailable) {
+            sb.append(b.toString() + "\n");
         }
         return sb.toString();
     }
@@ -190,6 +177,15 @@ public class BibliotecaApp {
         return "That book is not available.";
     }
 
+    private String listBooksOnLoan(User currentUser) {
+        StringBuilder sb = new StringBuilder();
+        for (Book b : booksOnLoan) {
+            if (b.getOnLoanTo().equals(currentUser)) {
+                sb.append(b.toString() + "\n");
+            }
+        }
+        return sb.toString();
+    }
 
     public String returnBook(int item) {
         currentState = STATE.MENU;
@@ -202,5 +198,25 @@ public class BibliotecaApp {
             }
         }
         return "That is not a valid book to return.";
+    }
+
+    private String listAllMovies() {
+        StringBuilder sb = new StringBuilder();
+        for (Movie m : moviesAvailable) {
+            sb.append(m.toString() + "\n");
+        }
+        return sb.toString();
+    }
+
+    private String movieCheckOut(int item) {
+        currentState = STATE.MENU;
+        for (Movie m : moviesAvailable) {
+            if (m.getId() == item) {
+                moviesAvailable.remove(m);
+                movieOnLoan.add(m);
+                return "Thank you! Enjoy the movie";
+            }
+        }
+        return "That book is not available.";
     }
 }
