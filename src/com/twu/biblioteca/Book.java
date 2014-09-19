@@ -8,12 +8,14 @@ public class Book {
     private String title;
     private String author;
     private String publishYear;
+    private User onLoanTo;
 
     public Book(int id, String title, String author, String publishYear) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publishYear = publishYear;
+        onLoanTo = null;
     }
 
     public int getId() {
@@ -32,6 +34,10 @@ public class Book {
         return publishYear;
     }
 
+    public User getOnLoanTo() {
+        return onLoanTo;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -46,6 +52,10 @@ public class Book {
 
     public void setPublishYear(String publishYear) {
         this.publishYear = publishYear;
+    }
+
+    public void setOnLoanTo(User onLoanTo) {
+        this.onLoanTo = onLoanTo;
     }
 
     @Override
