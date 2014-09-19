@@ -30,10 +30,10 @@ public class BibliotecaAppTest {
             "\n" +
             "Please select book to checkout.\n" +
             "Thank you! Enjoy the book\n";
-    public static final String STRING_ALL_MOVIES = " 1. Transformers              (2007) Michael Bay  7 of10\n" +
-            " 2. Fast & Furious 6          (2013) Justin Lin   7 of10\n" +
-            " 3. Transcendence             (2014) Wally Pfister 6 of10\n" +
-            " 4. 2012                      (2009) Roland Emmerich 5 of10\n\n";
+    public static final String STRING_ALL_MOVIES = " 1. Transformers              (2007) Michael Bay   7of10\n" +
+            " 2. Fast & Furious 6          (2013) Justin Lin    7of10\n" +
+            " 3. Transcendence             (2014) Wally Pfister  6of10\n" +
+            " 4. 2012                      (2009) Roland Emmerich  5of10\n\n";
     public static final String STRING_CHECKOUT_MOVIE = STRING_ALL_MOVIES +
             "Please select movie to checkout.\n" +
             "Thank you! Enjoy the movie\n";
