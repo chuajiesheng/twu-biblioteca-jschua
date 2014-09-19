@@ -117,12 +117,12 @@
       <file leaf-file-name="BibliotecaAppTest.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.741007" vertical-offset="2643" max-vertical-offset="3420">
-              <caret line="100" column="46" selection-start-line="100" selection-start-column="46" selection-end-line="100" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.28057554" vertical-offset="108" max-vertical-offset="3435">
+              <caret line="15" column="3" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#8858#8859#0" expanded="true" />
-                <element signature="e#8885#8886#0" expanded="true" />
+                <element signature="e#8957#8958#0" expanded="true" />
+                <element signature="e#8984#8985#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -253,6 +253,9 @@
     <property name="OverrideImplement.overriding.sorted" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="IntroduceConstantDialog.RECENTS_KEY">
+      <recent name="com.twu.biblioteca.BibliotecaAppTest" />
+    </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.twu.biblioteca" />
     </key>
@@ -768,12 +771,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.741007" vertical-offset="2643" max-vertical-offset="3420">
-          <caret line="100" column="46" selection-start-line="100" selection-start-column="46" selection-end-line="100" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.28057554" vertical-offset="108" max-vertical-offset="3435">
+          <caret line="15" column="3" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8858#8859#0" expanded="true" />
-            <element signature="e#8885#8886#0" expanded="true" />
+            <element signature="e#8957#8958#0" expanded="true" />
+            <element signature="e#8984#8985#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -39,6 +39,7 @@ public class BibliotecaAppTest {
             BibliotecaApp.STRING_MENU_LOGGED_IN + "\n";
     public static final String STRING_LOGIN_FAILED = STRING_LOGIN_PROMPT + "Login Failed.\n\n" +
             BibliotecaApp.STRING_MENU + "\n";
+    public static final String STRING_USER_CRED = "123-4567\ndavid123\n";
 
     private ByteArrayOutputStream outputBuffer;
     private PrintStream out;
@@ -99,7 +100,7 @@ public class BibliotecaAppTest {
     @Test
     public void testCheckoutBook() throws Exception {
         String expected = STRING_LOGIN_SUCCESS + STRING_CHECKOUT_BOOK;
-        InputStream in = new ByteArrayInputStream("2\n123-4567\ndavid123\n2\n1\n".getBytes());
+        InputStream in = new ByteArrayInputStream(("2\n" + STRING_USER_CRED + "2\n1\n").getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
         String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
@@ -120,7 +121,7 @@ public class BibliotecaAppTest {
                 "\n" +
                 "Please select book to return.\n" +
                 "Thank you for returning the book.\n";
-        InputStream in = new ByteArrayInputStream("2\n123-4567\ndavid123\n2\n1\n3\n1\n".getBytes());
+        InputStream in = new ByteArrayInputStream(("2\n" + STRING_USER_CRED + "2\n1\n3\n1\n").getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
 
@@ -138,7 +139,7 @@ public class BibliotecaAppTest {
                 "\n" +
                 "Please select book to return.\n" +
                 "Thank you for returning the book.\n";
-        InputStream in = new ByteArrayInputStream("3\n123-4567\ndavid123\n3\n1\n".getBytes());
+        InputStream in = new ByteArrayInputStream(("3\n" + STRING_USER_CRED + "3\n1\n").getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.checkOut(user, 1);
         app.checkOut(new User(-1, "Walter", "mitty", "", "", ""), 2);
@@ -183,7 +184,7 @@ public class BibliotecaAppTest {
     @Test
     public void testLogin() throws Exception {
         String expected = STRING_LOGIN_SUCCESS;
-        InputStream in = new ByteArrayInputStream("0\n123-4567\ndavid123\n".getBytes());
+        InputStream in = new ByteArrayInputStream(("0\n" + STRING_USER_CRED).getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
         String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
@@ -205,7 +206,7 @@ public class BibliotecaAppTest {
         String expected = "Name: David\n" +
                 "Email: david@hotmail.com\n" +
                 "Phone: (65) 6123 4567\n";
-        InputStream in = new ByteArrayInputStream("0\n123-4567\ndavid123\n0".getBytes());
+        InputStream in = new ByteArrayInputStream(("0\n" + STRING_USER_CRED + "0").getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
         String res = outputBuffer.toString();
