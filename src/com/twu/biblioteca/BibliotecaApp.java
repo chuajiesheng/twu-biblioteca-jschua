@@ -4,12 +4,14 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class BibliotecaApp {
 
     public static final String STRING_WELCOME_MSG = "Welcome to Biblioteca!";
     public static final String STRING_MENU = "Biblioteca Menu\n" +
+            "0. Login\n" +
             "1. List all Books\n" +
             "2. Checkout Book\n" +
             "3. Return Book\n" +
@@ -36,6 +38,12 @@ public class BibliotecaApp {
             new Movie(4, "2012", 2009, "Roland Emmerich", 5)
     };
 
+    private User[] allUsers =  {
+            new User(1, "David", "david123")
+    };
+    private HashMap<String, User> users;
+    private User currentUser = null;
+
     public static void main(String[] args) {
         new BibliotecaApp().run(System.in, System.out);
     }
@@ -48,6 +56,11 @@ public class BibliotecaApp {
         moviesAvailable = new ArrayList<Movie>();
         Collections.addAll(moviesAvailable, allMovies);
         movieOnLoan = new ArrayList<Movie>();
+
+        users = new HashMap<String, User>();
+        for (User u : allUsers) {
+            users.put(u.getUsername(), u);
+        }
     }
 
     public void run(InputStream in, PrintStream out) {
@@ -63,7 +76,7 @@ public class BibliotecaApp {
                 if (option == 6) {
                     break;
                 }
-                out.println(navigateMenu(option));
+                out.println(navigateMenu(sc, option));
             } else if (currentState == STATE.BOOK_CHECKOUT) {
                 out.println(checkOut(option));
             } else if (currentState == STATE.BOOK_RETURN) {
@@ -110,8 +123,10 @@ public class BibliotecaApp {
         return STRING_MENU;
     }
 
-    public String navigateMenu(int item) {
-        if (item == 1) {
+    public String navigateMenu(Scanner sc, int item) {
+        if (item == 0) {
+            return checkLogin(sc);
+        } else if (item == 1) {
             return listAllBooks();
         } else if (item == 2) {
             currentState = STATE.BOOK_CHECKOUT;
@@ -133,6 +148,17 @@ public class BibliotecaApp {
             return "Select a valid option!";
         }
         return null;
+    }
+
+    private String checkLogin(Scanner sc) {
+        String username = sc.next();
+        String password = sc.next();
+        currentUser = users.get(username).checkPassword(password);
+        if (currentUser != null) {
+            return "Login Successful!";
+        } else {
+            return "Login Failed.";
+        }
     }
 
     private String listAllMovies() {

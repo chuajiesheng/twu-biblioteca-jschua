@@ -83,13 +83,13 @@ public class BibliotecaAppTest {
     @Test
     public void testNavigateMenu() throws Exception {
         String expected = STRING_ALL_BOOKS;
-        assertEquals(expected, new BibliotecaApp().navigateMenu(1));
+        assertEquals(expected, new BibliotecaApp().navigateMenu(null, 1));
     }
 
     @Test
     public void testInvalidNavigateMenu() throws Exception {
         String expected = "Select a valid option!";
-        assertEquals(expected, new BibliotecaApp().navigateMenu(-1));
+        assertEquals(expected, new BibliotecaApp().navigateMenu(null, -1));
     }
 
     @Test
@@ -149,6 +149,26 @@ public class BibliotecaAppTest {
     public void testCheckoutMovie() throws Exception {
         String expected = STRING_CHECKOUT_MOVIE;
         InputStream in = new ByteArrayInputStream("5\n1\n".getBytes());
+        final BibliotecaApp app = new BibliotecaApp();
+        app.run(in, out);
+        String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void testLogin() throws Exception {
+        String expected = "Login Successful!\n";
+        InputStream in = new ByteArrayInputStream("0\nDavid\ndavid123\n".getBytes());
+        final BibliotecaApp app = new BibliotecaApp();
+        app.run(in, out);
+        String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
+        assertEquals(expected, res);
+    }
+
+    @Test
+    public void testFailedLogin() throws Exception {
+        String expected = "Login Failed.\n";
+        InputStream in = new ByteArrayInputStream("0\nDavid\ndavid123456\n".getBytes());
         final BibliotecaApp app = new BibliotecaApp();
         app.run(in, out);
         String res = outputBuffer.toString().replace(STRING_STARTUP_MSG, "");
